@@ -6,6 +6,96 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+library(tidyverse)
+library(here)
+library(janitor)
+library(lubridate)
+library(kableExtra)
+```
+
+## Task 4
+
+In this assignment, I will compare the mean size of purple urchins in the "control" and "annual" sections of the Naples Reef in January 2010. 
+
+```{r}
+#read in data used in this task
+urchin_data <- read.csv(here("data", "urchins.csv"))
+```
+
+### Data Wrangling
+Select for purple urchins, January 2010 date, and Naples Reef site.
+```{r}
+# Only include Naples Reef observations for purple urchins in January 2010
+purple_naples_2010 <- urchin_data %>% 
+  clean_names() %>% 
+  filter(common_name == "Purple Urchin") %>% 
+  mutate(date_converted = mdy(date)) %>%  #use lubridate to convert format
+  mutate(year = year(date_converted)) %>% #create new year column (and month below)
+  mutate(month = month(date_converted)) %>% 
+  filter(year == 2010, month == 1) %>% 
+  filter(site == "NAPL")
+```
+
+### Exploratory Data Visualization
+Use histograms and QQ-plots to look at size distribution for annual and control treatments. 
+
+*Histogram**
+```{r}
+ggplot(purple_naples_2010, aes(x = size))+ #plot selected data by size in histogram first
+  geom_histogram()+
+  facet_wrap(~ treatment)+ #separate graphs out by treatment for clarity
+  theme_bw()+ #bw theme for clarity
+  labs(
+    x = "Urchin Size (cm)",
+    y = "Count",
+    title = "Urchin Size Seperated by Treatemnt Type"
+  ) #update labels
+```
+**Quantile-Quantile Plot**
+```{r}
+ggplot(purple_naples_2010, aes(sample = size))+ #visualize quantile comparison of size
+  geom_qq()+
+  facet_wrap(~treatment)+ #again, break up by treatment type
+  theme_bw()
+```
+**Main Takeaways from Exploratory Data Vis**
+
+1-2 sentences about the key takeaways HERE!!!!!!!!
+
+**Table of Descriptive statistics**
+```{r}
+purple_naples_2010_stats <- purple_naples_2010 %>%  #create new data set to call up for kable table below
+  group_by(treatment) %>%  # compare the treatment types
+  summarize(mean_size = mean(size), #calculate mean median and standard deviation for the treatments
+            median_size = median(size),
+            standard_dev = sd(size),
+            sample_size  = n())
+
+purple_naples_2010_stats %>% #create kable table of descriptive stats
+  kable(col.names = c("Treatment",
+                      "Mean (cm)",
+                      "Median (cm)",
+                      "Standard Deviation",
+                      "Sample Size (n)"))%>% 
+  kable_styling(full_width = FALSE) #for visual clarity
+```
+
+### Two Sample T-Test
+
+First, split data frame into two, separated by treatment.
+```{r}
+annual_sample <- purple_naples_2010 %>% 
+  filter(treatment == "ANNUAL") %>% 
+  pull(size) #only need size values for the t-test
+
+control_sample <- purple_naples_2010 %>% 
+  filter(treatment == "CONTROL") %>% 
+  pull(size)
+```
+
+Next, run two sample t-test.
+```{r}
+t.test(annual_sample, control_sample)
 ```
 
