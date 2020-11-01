@@ -1,0 +1,55 @@
+---
+title: "a3_task3_anastasia_kunz"
+author: "Anastasia Kunz"
+date: "10/31/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
+library(tidyverse)
+library(here)
+library(janitor)
+```
+
+
+# Task 3
+
+```{r}
+urchin_data <- read.csv(here("data", "urchins.csv")) %>% #read in data for this task
+  clean_names()
+```
+
+### Urchin Size Comparisons 
+
+##### Exploratory Data Visualizations
+Compare distribution of sizes between purple and red urchins using faceted histograms and boxplots
+
+Histogram:
+```{r}
+ggplot(urchin_data, aes(x = size)) + #plot urchin data and explore by size
+  geom_histogram(bin = 20) + #first visualize by histogram
+  facet_wrap(~common_name)+ # separate out by red and purple urchin, through common name
+  labs(
+    x = "Urchin Size (cm)",
+    y = "Count",
+    title = "Histogram of Urchin Size"
+  ) + 
+  theme_bw()
+```
+
+Box plot:
+
+```{r}
+ggplot(urchin_data, aes(x = common_name, y = size))+ # plot with common_name and size
+  geom_boxplot() + #use geom box plot 
+  labs(
+    x = "Common Name",
+    y = "Urchin Size (cm)",
+    title = "Box Plot of Urchin Szie"
+  )+
+  theme_bw() #bw theme for clarity
+```
+
+
+
