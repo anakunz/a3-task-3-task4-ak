@@ -16,21 +16,24 @@ library(lubridate)
 
 
 # Task 3
+In this assignment, I will explore visualizing data in graphs and tables to better understand the data frame I will be working with. Here I examine urchin data from 5 sites along the Santa Barbara coast.
 
 ```{r}
-urchin_data <- read.csv(here("data", "urchins.csv")) %>% #read in data for this task
+#read in data for this task
+urchin_data <- read.csv(here("data", "urchins.csv")) %>% 
   clean_names()
 ```
 
-### Urchin Size Comparisons 
+### Red and Purple Urchin Size Comparisons 
 
-##### Exploratory Data Visualizations
-Compare distribution of sizes between purple and red urchins using faceted histograms and boxplots
+##### **Exploratory Data Visualizations**
+Compare distribution of sizes between purple and red urchins using faceted histograms and boxplots.
 
 Histogram:
 ```{r}
-ggplot(urchin_data, aes(x = size)) + #plot urchin data and explore by size
-  geom_histogram(bin = 20) + #first visualize by histogram
+#plot urchin data and explore by size
+ggplot(urchin_data, aes(x = size)) + 
+  geom_histogram(bin = 20) + #first, visualize by histogram
   facet_wrap(~common_name)+ # separate out by red and purple urchin, through common name
   labs(
     x = "Urchin Size (cm)",
@@ -43,7 +46,8 @@ ggplot(urchin_data, aes(x = size)) + #plot urchin data and explore by size
 Box plot:
 
 ```{r}
-ggplot(urchin_data, aes(x = common_name, y = size))+ # plot with common_name and size
+# plot with common_name and size
+ggplot(urchin_data, aes(x = common_name, y = size))+ 
   geom_boxplot() + #use geom box plot 
   labs(
     x = "Common Name",
@@ -53,7 +57,7 @@ ggplot(urchin_data, aes(x = common_name, y = size))+ # plot with common_name and
   theme_bw() #bw theme for clarity
 ```
 
-##### Descriptive Statistics Table 
+##### **Descriptive Statistics Table** 
 
 This summary table displays the mean, median, standard deviation and sample size for red and purple urchin samples. 
 
@@ -81,6 +85,9 @@ In general, purple urchins seem to be smaller than red urchins as seen in both e
 
 ### Purple Urchin Counts by Size and Year
 
+##### **Data Wrangling**
+Create purple urchin data frame and add full site name and date with correct class. Create a new data frame of purple urchin counts by site and year.
+
 ```{r}
 purple_urchins <- urchin_data %>% 
   filter(common_name == "Purple Urchin") %>% 
@@ -95,10 +102,26 @@ purple_urchins <- urchin_data %>%
   ))
 
 #Create summary table by urchin species showing year and site counts
-purple_urchins %>% 
-  group_by()
+purple_urchin_stats <- purple_urchins %>% 
+  group_by(site_full) %>% 
+  count(year)
 ```
 
+##### **Exploratory Graph**
+Create exploratory graph of counts of purple urchins at each site over time using facet_wrap to separate out by site for easy visualization.
+```{r}
+ggplot(purple_urchin_stats,
+       aes(x = year,
+           y = n))+
+  geom_col(size = 2)+
+  facet_wrap(~ site_full)+
+  theme_bw()+
+  labs(
+    x = "Year",
+    y = "Urchin Count",
+    title = "Yearly Purple Urchin Count by Site"
+  )
+```
 
 
 
