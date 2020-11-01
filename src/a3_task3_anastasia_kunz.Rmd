@@ -10,6 +10,8 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE, warning = FALSE)
 library(tidyverse)
 library(here)
 library(janitor)
+library(kableExtra)
+library(lubridate)
 ```
 
 
@@ -47,9 +49,56 @@ ggplot(urchin_data, aes(x = common_name, y = size))+ # plot with common_name and
     x = "Common Name",
     y = "Urchin Size (cm)",
     title = "Box Plot of Urchin Szie"
-  )+
+  )+ # label x and y axis
   theme_bw() #bw theme for clarity
 ```
+
+##### Descriptive Statistics Table 
+
+This summary table displays the mean, median, standard deviation and sample size for red and purple urchin samples. 
+
+```{r}
+urchin_stats <- urchin_data %>% #create new variable to easily call statistics for table below
+  group_by(common_name) %>% #group data by the species common name so stats show up for purple and red urchins separately
+  summarize(mean_size = mean(size), #use summarize to gather mean, med, std dev, and sample size of urchin samples
+            median_size = median(size),
+            standard_dev = sd(size),
+            n = n())
+urchin_stats %>%  
+  kable(col.names = c("Species", #Use kable for clean table. Need species AND the statistics reported as col names.
+                      "Mean (cm)",
+                      "Median (cm)",
+                      "Standard Deviation",
+                      "Sample Size (n)")) %>% 
+  kable_styling(full_width = FALSE)
+```
+
+#### Urchin Size Exploratory Data Analysis
+
+In general, purple urchins seem to be smaller than red urchins as seen in both exploratory plots and the summary statistics table. According to the mean for the two samples, the Red Urchin has a diameter that is about 2.3 centimeters larger than the Purple Urchin. This is about 50% larger than the Purple Urchin. This is similar to the difference between the two species when comparing the sample medians. The Red Urchin median length is 2.5 cm greater in diameter than the Purple Urchin. Additionally, there is a greater spread of size for red urchins with a slightly higher standard deviation within the sample. Both populations look normal, with a slight skew in the purple urchin sample. 
+
+
+
+### Purple Urchin Counts by Size and Year
+
+```{r}
+purple_urchins <- urchin_data %>% 
+  filter(common_name == "Purple Urchin") %>% 
+  mutate(date_converted = mdy(date)) %>% 
+  mutate(year = year(date_converted)) %>% 
+  mutate(site_full = case_when(
+    site == "NAPL" ~ "Naples Reef",
+    site == "AQUE" ~ "Arroyo Quemado Reef",
+    site == "CARP" ~ "Carpinteria Reef",
+    site == "MOHK" ~ "Mohawk Reef",
+    site == "IVEE" ~ "Isla Vista Reef"
+  ))
+
+#Create summary table by urchin species showing year and site counts
+purple_urchins %>% 
+  group_by()
+```
+
 
 
 
