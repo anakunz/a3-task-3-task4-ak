@@ -24,7 +24,9 @@ urchin_data <- read.csv(here("data", "urchins.csv"))
 ```
 
 ### Data Wrangling
+
 Select for purple urchins, January 2010 date, and Naples Reef site.
+
 ```{r}
 # Only include Naples Reef observations for purple urchins in January 2010
 purple_naples_2010 <- urchin_data %>% 
@@ -38,9 +40,11 @@ purple_naples_2010 <- urchin_data %>%
 ```
 
 ### Exploratory Data Visualization
+
 Use histograms and QQ-plots to look at size distribution for annual and control treatments. 
 
-*Histogram**
+**Histogram**
+
 ```{r}
 ggplot(purple_naples_2010, aes(x = size))+ #plot selected data by size in histogram first
   geom_histogram()+
@@ -52,18 +56,22 @@ ggplot(purple_naples_2010, aes(x = size))+ #plot selected data by size in histog
     title = "Urchin Size Seperated by Treatemnt Type"
   ) #update labels
 ```
+
 **Quantile-Quantile Plot**
+
 ```{r}
 ggplot(purple_naples_2010, aes(sample = size))+ #visualize quantile comparison of size
   geom_qq()+
   facet_wrap(~treatment)+ #again, break up by treatment type
   theme_bw()
 ```
+
 **Main Takeaways from Exploratory Data Vis**
 
-1-2 sentences about the key takeaways HERE!!!!!!!!
+1-2 sentences about the key takeaways HERE!!!!!!!! DONT FORGET TO WRITE THIS UP
 
 **Table of Descriptive statistics**
+
 ```{r}
 purple_naples_2010_stats <- purple_naples_2010 %>%  #create new data set to call up for kable table below
   group_by(treatment) %>%  # compare the treatment types
@@ -84,6 +92,7 @@ purple_naples_2010_stats %>% #create kable table of descriptive stats
 ### Two Sample T-Test
 
 First, split data frame into two, separated by treatment.
+
 ```{r}
 annual_sample <- purple_naples_2010 %>% 
   filter(treatment == "ANNUAL") %>% 
@@ -95,7 +104,16 @@ control_sample <- purple_naples_2010 %>%
 ```
 
 Next, run two sample t-test.
+
 ```{r}
 t.test(annual_sample, control_sample)
 ```
+**T-Test Analysis**
+
+2 - 3 SENTENCES COMPARING THE MEANS THAT PROVIDES MEANINGFUL DISCUSSION ABOUT THE MEAN DIFFERENCES BEYOND (but also including) THE PVALUE. INCLUDING ACTUAL MEANS AND STDEV FOR EACH GROUP AND ACTUAL DIFF AND/OR % DIFF IN MEANS
+
+**Conclusion**
+
+MEANING OF THE PVALUE THAT YOU FOUND IN THE T TEST
+
 
