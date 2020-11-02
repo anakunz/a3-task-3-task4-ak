@@ -68,7 +68,7 @@ ggplot(purple_naples_2010, aes(sample = size))+ #visualize quantile comparison o
 
 **Main Takeaways from Exploratory Data Vis**
 
-From looking at exploratory data visualizations we can see that the urchins in the annual treatment have a mean that is slightly higher than the urchins measured from the control treatment. Looking at the histogram for both treatments, it is interesting to see that there are two peaks in counts for urchin size, one around 3cm and one around 5cm for both populations, which is not captured by the descriptive statistics table below. It is also important to note the standard deviation for these populations. The annual treatment has a slightly higher standard deviation than the control treatment, but has a slightly smaller sample size.
+From looking at exploratory data visualizations we can see that the urchins in the annual treatment have a mean that is slightly higher than the urchins measured from the control treatment. Looking at the histogram for both treatments, it is interesting to see that there are two peaks in counts for urchin size, one around 3cm and one around 5cm for both populations, which is not captured by the descriptive statistics table below. It is also important to note the standard deviation for these populations. The annual treatment has a slightly higher standard deviation than the control treatment, but has a slightly smaller sample size. Judging from the proximity of the mean and median for both samples, together with the histogram and quantile-quantile plot, the samples look generally normal, which holds with the central limit theorem.
 
 **Table of Descriptive statistics**
 
@@ -110,10 +110,10 @@ t.test(annual_sample, control_sample)
 ```
 **T-Test Analysis**
 
-Looking at the reported difference in means, we can see that they are relatively close together, with about a 0.2cm difference. When I calculate the percent difference between the means, we can see that there is only about a 5% difference between them. Again, the standard deviation is also not very different for the two populations, both just a little less than 1. In this context, when we look at the p-value of 0.2536, it seems logical that we would *not* have overwhelming evidence to reject the null hypothesis. While the annual treatment urchins seem to be slightly bigger, there is not substantial evidence that their populations would likely have different means. 
+Looking at the reported difference in means, we can see that they are relatively close together, with about a 0.2cm difference. When I calculate the percent increase from the control to the annual  means, we can see that there is only about a 5% increase. Again, the standard deviation is also not very different for the two populations, both just a little less than 1. In this context, when we look at the p-value of 0.2536, it seems logical that we would *not* have overwhelming evidence to reject the null hypothesis. While the annual treatment urchins seem to be slightly bigger, there is not substantial evidence that their populations would likely have different means. 
 
 ```{r}
-#Percent difference:
+#Percent increase from control to annual treatment:
 (3.916667 - 3.725806)/3.725806 
 ```
 
