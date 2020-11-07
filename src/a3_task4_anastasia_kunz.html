@@ -571,6 +571,10 @@ summary {
 urchin_data &lt;- read.csv(here(&quot;data&quot;, &quot;urchins.csv&quot;))</code></pre>
 <div id="data-wrangling" class="section level3">
 <h3>Data Wrangling</h3>
+</div>
+</div>
+<div id="yay-v-and-s-are-here" class="section level2">
+<h2>yay v and s are here</h2>
 <p>Select for purple urchins, January 2010 date, and Naples Reef site.</p>
 <pre class="r"><code># Only include Naples Reef observations for purple urchins in January 2010
 purple_naples_2010 &lt;- urchin_data %&gt;% 
@@ -581,7 +585,6 @@ purple_naples_2010 &lt;- urchin_data %&gt;%
   mutate(month = month(date_converted)) %&gt;% 
   filter(year == 2010, month == 1) %&gt;% 
   filter(site == &quot;NAPL&quot;)</code></pre>
-</div>
 <div id="exploratory-data-visualization" class="section level3">
 <h3>Exploratory Data Visualization</h3>
 <p>Use histograms and QQ-plots to look at size distribution for annual and control treatments.</p>

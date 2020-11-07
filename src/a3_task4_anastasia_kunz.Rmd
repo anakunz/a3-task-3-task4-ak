@@ -24,6 +24,8 @@ urchin_data <- read.csv(here("data", "urchins.csv"))
 ```
 
 ### Data Wrangling
+## yay v and s are here
+
 
 Select for purple urchins, January 2010 date, and Naples Reef site.
 
